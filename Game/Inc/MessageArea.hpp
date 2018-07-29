@@ -20,6 +20,7 @@ public:
 	MessageArea()
 	{
 		text.setFont( con::Global.Assets.BitmapFonts.getDefault() );
+		text.setColor( { 200,200,200 } );
 	}
 
 	void display( const std::string& textToDisplay_, const sf::Time& displayingSpeed_ )

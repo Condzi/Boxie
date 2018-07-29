@@ -24,7 +24,7 @@ public:
 		Map.TileData.reset( { 32, 20 } );
 		Tile t;
 		t.TextureIndex = 1;
-		Map.TileData[0][0] = t;
+		Map.TileData[0][1] = t;
 		Map.TileData[31][0] = t;
 		Map.TileData[31][19] = t;
 		Map.TileData[0][19] = t;
@@ -35,5 +35,22 @@ public:
 		con::Global.GameWindow.setView( view );
 
 		MessageAr.display( "Hello, World!", sf::seconds( 0.2f ) );
+	}
+
+	void onUpdate()
+	{
+		auto& input = con::Global.Input;
+		auto& v = Map.MapView;
+		auto dt = con::Global.FrameTime.asSeconds();
+
+		if ( input.isDown( con::KeyboardKey::A ) )
+			v.move( 2, 0 );
+		if ( input.isDown( con::KeyboardKey::D ) )
+			v.move( -2, 0 );
+		if ( input.isDown( con::KeyboardKey::S ) )
+			v.move( 0, -2 );
+		if ( input.isDown( con::KeyboardKey::W ) )
+			v.move( 0, 2 );
+
 	}
 };

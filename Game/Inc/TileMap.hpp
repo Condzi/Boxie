@@ -23,14 +23,16 @@ class TileMap :
 {
 public:
 	inline static constexpr uint8_t TILE_SIZE = 4;
-	inline static const RectF VIEWPORT{ 0.78125f / 100 , 9.3725f / 100, 98.4375f / 100 , 90.6275f / 100 };
+	inline static const RectF VIEWPORT{ 0.78125f / 100 , 9.3725f / 100, ( 100 - 1.5625f ) / 100, 81.25f / 100 };
 	sf::View MapView;
 	con::FixedArray2D<Tile> TileData;
 	const sf::Texture* TilesTexture = nullptr;
 
 	TileMap()
 	{
-		MapView = sf::View{ {0,0,128,96} };
+		// @ToDo: Scale it to map size?
+		// Map is shrinked 2 pixels in horizontal and 9 from up and down
+		MapView = sf::View{ {0,0, 128 - 2,96 - 18} };
 		MapView.setViewport( VIEWPORT );
 	}
 
