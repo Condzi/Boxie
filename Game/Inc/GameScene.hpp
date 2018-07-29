@@ -51,6 +51,5 @@ public:
 			v.move( 0, -2 );
 		if ( input.isDown( con::KeyboardKey::W ) )
 			v.move( 0, 2 );
-
 	}
 };
