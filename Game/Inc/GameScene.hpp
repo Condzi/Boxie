@@ -6,12 +6,14 @@
 #pragma once
 
 #include "TileMap.hpp"
+#include "MessageArea.hpp"
 
 class GameScene final :
 	public con::Scene
 {
 public:
 	TileMap Map;
+	MessageArea MessageAr;
 
 	void onPush() override
 	{
@@ -24,21 +26,14 @@ public:
 		t.TextureIndex = 1;
 		Map.TileData[0][0] = t;
 		Map.TileData[31][0] = t;
-		Map.TileData[31][18] = t;
-		Map.TileData[0][18] = t;
+		Map.TileData[31][19] = t;
+		Map.TileData[0][19] = t;
 
 		Map.updateVertices();
 
 		sf::View view( { 0,0,128,96 } );
 		con::Global.GameWindow.setView( view );
 
-		// @ToDo: Add message area on top for this code.
-		/*
-		text = con::BitmapText( "HELLO, I'M BOXIE", con::Global.Assets.BitmapFonts.getDefault(), { 0,0 }, sf::Color( 200,200,200 ) );
-		testShape.setPosition( 1, 8 );
-		testShape.setSize( { 4, 4 } );
-		testShape.setFillColor( sf::Color( 175, 50, 50 ) );
-
-		*/
+		MessageAr.display( "Hello, World!", sf::seconds( 0.2f ) );
 	}
 };

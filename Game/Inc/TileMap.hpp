@@ -23,7 +23,7 @@ class TileMap :
 {
 public:
 	inline static constexpr uint8_t TILE_SIZE = 4;
-	inline static const RectF VIEWPORT{ 0.78125f / 100 , 9.3725f / 100, 98.4375f / 100 , 81.25f / 100 };
+	inline static const RectF VIEWPORT{ 0.78125f / 100 , 9.3725f / 100, 98.4375f / 100 , 90.6275f / 100 };
 	sf::View MapView;
 	con::FixedArray2D<Tile> TileData;
 	const sf::Texture* TilesTexture = nullptr;
