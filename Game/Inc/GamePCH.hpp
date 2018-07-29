@@ -6,3 +6,8 @@
 #pragma once
 
 #include <Engine/All.hpp>
+
+enum class SceneID : int16_t
+{
+	Game
+};

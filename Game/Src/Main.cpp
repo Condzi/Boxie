@@ -5,7 +5,13 @@
 
 #include "GamePCH.hpp"
 
+#include "GameScene.hpp"
+
 int main()
 {
+	con::Global.SceneStack.registerScene<GameScene>( static_cast<int16_t>( SceneID::Game ) );
+
+	con::Global.SceneStack.push( static_cast<int16_t>( SceneID::Game ) );
+
 	con::Global.Game.run();
 }
