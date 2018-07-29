@@ -9,5 +9,6 @@
 
 enum class SceneID : int16_t
 {
+	Loader,
 	Game
 };
