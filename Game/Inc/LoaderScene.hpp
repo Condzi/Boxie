@@ -12,6 +12,7 @@ public:
 	void onPush() override
 	{
 		validateSettings();
+		loadTextures();
 		loadFont();
 
 		con::Global.SceneStack.pop();
@@ -44,6 +45,13 @@ private:
 		}
 	}
 
+	void loadTextures()
+	{
+		auto& textures = con::Global.Assets.Texture;
+
+		textures.load( "data/tiles_texture.png", "tiles_texture" );
+	}
+
 	void loadFont()
 	{
 		auto& bitmapFonts = con::Global.Assets.BitmapFonts;
@@ -54,6 +62,4 @@ private:
 		font.setGlyphSize( { 8,8 } );
 		bitmapFonts._setDefault( std::move( font ) );
 	}
-
-
 };
