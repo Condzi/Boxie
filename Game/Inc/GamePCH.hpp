@@ -3,9 +3,6 @@
 	https://github.com/condzi
 */
 
-#include "GamePCH.hpp"
+#pragma once
 
-int main()
-{
-	con::Global.Game.run();
-}
+#include <Engine/All.hpp>

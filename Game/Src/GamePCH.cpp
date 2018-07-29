@@ -4,8 +4,3 @@
 */
 
 #include "GamePCH.hpp"
-
-int main()
-{
-	con::Global.Game.run();
-}
