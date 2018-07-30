@@ -23,7 +23,9 @@ class TileMap :
 {
 public:
 	inline static constexpr uint8_t TILE_SIZE = 4;
-	inline static const RectF VIEWPORT{ 0.78125f / 100 , 9.3725f / 100, ( 100 - 1.5625f ) / 100, 81.25f / 100 };
+	inline static const RectF VIEWPORT{ mapPixelXToAbsolute( 1 ), mapPixelYToAbsolute( 9 ), mapPixelXToAbsolute( WINDOW_WIDTH - 2 ), mapPixelYToAbsolute( WINDOW_HEIGHT - 18 ) };
+	inline static const Vec2f VIEW_AREA{ WINDOW_WIDTH-4, WINDOW_HEIGHT-18 };
+
 	sf::View View;
 	con::FixedArray2D<Tile> TileData;
 	const sf::Texture* TilesTexture = nullptr;
@@ -32,7 +34,7 @@ public:
 	{
 		// @ToDo: Scale it to map size?
 		// Map is shrinked 4 pixels in horizontal and 9 from up and down
-		View = sf::View{ {0,0, 128 - 4,96 - 18} };
+		View = sf::View{ {0,0, VIEW_AREA.x,VIEW_AREA.y} };
 		View.setViewport( VIEWPORT );
 		setDrawLayer( static_cast<int16_t>( DrawLayer::TileMap ) );
 	}

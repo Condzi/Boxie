@@ -69,7 +69,7 @@ private:
 	void render( sf::RenderWindow& window ) override
 	{
 		auto currentView = window.getView();
-		sf::View textView( { 0,0,128,96 } );
+		auto textView = currentView;
 		textView.setViewport( VIEWPORT );
 
 		window.setView( textView );

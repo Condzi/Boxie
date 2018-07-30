@@ -31,7 +31,7 @@ public:
 
 		Map.updateVertices();
 
-		sf::View view( { 0,0,128,96 } );
+		sf::View view( { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT } );
 		con::Global.GameWindow.setView( view );
 
 		MessageAr.display( "Hello, I'm Boxie", sf::seconds( 0.2f ) );
