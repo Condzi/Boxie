@@ -34,6 +34,7 @@ public:
 		// Map is shrinked 4 pixels in horizontal and 9 from up and down
 		View = sf::View{ {0,0, 128 - 4,96 - 18} };
 		View.setViewport( VIEWPORT );
+		setDrawLayer( static_cast<int16_t>( DrawLayer::TileMap ) );
 	}
 
 	virtual ~TileMap() = default;

@@ -12,3 +12,9 @@ enum class SceneID : int16_t
 	Loader,
 	Game
 };
+
+enum class DrawLayer : int16_t
+{
+	TileMap,
+	Entity
+};
