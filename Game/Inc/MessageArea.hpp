@@ -15,7 +15,7 @@ public:
 	std::string textToDisplay;
 	sf::Time displayingSpeed;
 	sf::Time timeSinceLastDisplay;
-	size_t charsAlreadyDisplayed = 1;
+	size_t charsAlreadyDisplayed = 0;
 
 	MessageArea()
 	{
@@ -33,17 +33,21 @@ public:
 	void clear()
 	{
 		textToDisplay.clear();
-		charsAlreadyDisplayed = 1;
+		text.setString( "" );
+		charsAlreadyDisplayed = 0;
 	}
 
-	bool isDisplayingSomething()
+	bool isDoneDisplaying()
 	{
-		return !textToDisplay.empty();
+		return charsAlreadyDisplayed == textToDisplay.size();
 	}
 
 private:
 	void update() override
 	{
+		if ( isDoneDisplaying() )
+			return;
+
 		timeSinceLastDisplay -= con::Global.FrameTime;
 		if ( timeSinceLastDisplay.asSeconds() < 0 ) {
 			if ( charsAlreadyDisplayed == textToDisplay.size() )

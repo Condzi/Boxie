@@ -34,7 +34,7 @@ public:
 		sf::View view( { 0,0,128,96 } );
 		con::Global.GameWindow.setView( view );
 
-		MessageAr.display( "Hello, World!", sf::seconds( 0.2f ) );
+		MessageAr.display( "Hello, I'm Boxie ", sf::seconds( 0.15f ) );
 	}
 
 	void onUpdate()
@@ -51,5 +51,9 @@ public:
 			v.move( 0, -2 );
 		if ( input.isDown( con::KeyboardKey::W ) )
 			v.move( 0, 2 );
+
+		if ( input.isDown( con::KeyboardKey::Space ) )
+			if ( MessageAr.isDoneDisplaying() )
+				MessageAr.clear();
 	}
 };
