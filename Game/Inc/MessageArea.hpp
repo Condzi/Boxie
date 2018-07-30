@@ -25,9 +25,17 @@ public:
 
 	void display( const std::string& textToDisplay_, const sf::Time& displayingSpeed_ )
 	{
+		// Additional space is needed to clear after all characters ale displayed, otherwise
+		// last one could be truncated
 		textToDisplay = textToDisplay_ + " ";
 		displayingSpeed = displayingSpeed_;
 		timeSinceLastDisplay = displayingSpeed;
+	}
+
+	void displayAll()
+	{
+		charsAlreadyDisplayed = textToDisplay.size() - 1;
+		text.setString( textToDisplay.substr( 0, charsAlreadyDisplayed - 1 ) );
 	}
 
 	void clear()
