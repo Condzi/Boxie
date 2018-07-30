@@ -21,7 +21,6 @@ static Vec2f movementDirToVectorDir( MovableEntity::MovementDirection dir )
 	case MovableEntity::MovementDirection::Up: return{ 0,-1 };
 	case MovableEntity::MovementDirection::Down: return{ 0,1 };
 	}
-
 	con::Global.Logger.log( con::LogPriority::Warning, "Somehow MovementDirection::None is here?" );
 	DebugBreak();
 }
@@ -61,9 +60,10 @@ void MovementDispatcher::updateByVelocity( MovableEntity & entity )
 
 	if ( entity.Velocity.x != 0 || entity.Velocity.y != 0 ) {
 		entity.position += entity.Velocity * dt;
-		if ( entity.position == roundF( entity.position ) ) {
+		if ( roundF( entity.position * 10.f ) / 10.f == roundF( entity.position ) ) {
 			entity.Velocity.x = entity.Velocity.y = 0;
 			entity.MoveDirection = MovableEntity::MovementDirection::None;
+			entity.position = roundF( entity.position );
 		}
 	}
 }
@@ -80,17 +80,17 @@ void MovementDispatcher::tryStartMoving( MovableEntity& entity )
 		auto begin = static_cast<uint8_t>( TileID::WALL_BEGIN );
 		auto end = static_cast<uint8_t>( TileID::WALL_END );
 
-		auto idx = tileMap->TileData.at( static_cast<Vec2u>( point ) ).TextureIndex;
+		const auto& tile = tileMap->TileData.at( static_cast<Vec2u>( point ) );
+		auto idx = tile.TextureIndex;
 
-		return begin >= idx < end;
+		return ( idx >= begin && idx < end ) || tile.EntityOnTop;
 	};
 
 	// If has movement dir and is standing => it requested movement in this frame
 	if ( entityDir != Dir::None && vel.x == 0 && vel.y == 0 ) {
 		Vec2f tileToCheckOffset = movementDirToVectorDir( entityDir );
 
-
-		if ( isObstacle( pos + tileToCheckOffset ) ) {
+		if ( isObstacle( pos  + tileToCheckOffset ) ) {
 			entityDir = Dir::None;
 			// @Debug only
 			con::Global.Logger.log( con::LogPriority::Info, "Obstacle - can't move" );

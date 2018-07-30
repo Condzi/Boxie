@@ -44,8 +44,7 @@ enum class TileID : uint8_t
 	FLOOR_BEGIN = 0, // Add floor tiles here \/\/
 	Floor = FLOOR_BEGIN,
 	FLOOR_END,
-
-	WALL_BEGIN, // Add wall tiles here \/\/
+	WALL_BEGIN = FLOOR_END, // Add wall tiles here \/\/
 	Wall = WALL_BEGIN,
 	WALL_END
 };

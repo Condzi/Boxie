@@ -50,6 +50,8 @@ private:
 		auto& textures = con::Global.Assets.Texture;
 
 		textures.load( "data/tiles_texture.png", "tiles_texture" );
+		textures.load( "data/entities_texture.png", "entities_texture" );
+
 	}
 
 	void loadFont()

@@ -7,6 +7,8 @@
 
 #include "TileMap.hpp"
 #include "MessageArea.hpp"
+#include "MovementDispatcher.hpp"
+#include "Player.hpp"
 
 class GameScene final :
 	public con::Scene
@@ -35,25 +37,16 @@ public:
 		con::Global.GameWindow.setView( view );
 
 		MessageAr.display( "Hello, I'm Boxie", sf::seconds( 0.2f ) );
+
+		addSystem<MovementDispatcher>( 0 );
+		spawn<Player>().position = { 3,3 };
 	}
 
 	void onUpdate()
 	{
 		auto& input = con::Global.Input;
-		auto& v = Map.View;
-		auto dt = con::Global.FrameTime.asSeconds();
-
-		if ( input.isDown( con::KeyboardKey::A ) )
-			v.move( 2, 0 );
-		if ( input.isDown( con::KeyboardKey::D ) )
-			v.move( -2, 0 );
-		if ( input.isDown( con::KeyboardKey::S ) )
-			v.move( 0, -2 );
-		if ( input.isDown( con::KeyboardKey::W ) )
-			v.move( 0, 2 );
 
 		if ( input.isDown( con::KeyboardKey::Space ) ) {
-
 			if ( MessageAr.isDoneDisplaying() )
 				MessageAr.clear();
 			else
