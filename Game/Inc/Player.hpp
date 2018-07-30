@@ -15,6 +15,7 @@ class Player final :
 {
 public:
 	sf::Sprite sprite;
+	TileMap* tileMap;
 
 	void onSpawn() override
 	{
@@ -28,7 +29,7 @@ public:
 	{
 		auto& input = con::Global.Input;
 
-		sprite.setPosition( position * static_cast<float32_t>( TileMap::TILE_SIZE ) );
+		updatePositions();
 
 		if ( MoveDirection != MovementDirection::None )
 			return;
@@ -44,13 +45,34 @@ public:
 	}
 
 private:
-	void render( sf::RenderWindow& window )
+	void updatePositions()
 	{
-		sf::View v{ { 0,0, TileMap::VIEW_AREA.x, TileMap::VIEW_AREA.y } };
-		v.setViewport( TileMap::VIEWPORT );
+		auto pixelPos = position * static_cast<float32_t>( TileMap::TILE_SIZE );
+		sprite.setPosition( pixelPos );
 
+		auto center = pixelPos;
+		auto viewAreaHalfX = TileMap::VIEW_AREA.x / 2;
+		auto viewAreaHalfY = TileMap::VIEW_AREA.y / 2;
+
+		auto mapSizeX = tileMap->TileData.size2D().x * TileMap::TILE_SIZE;
+		auto mapSizeY = tileMap->TileData.size2D().y * TileMap::TILE_SIZE;
+
+		if ( center.x - viewAreaHalfX <= 0 )
+			center.x = viewAreaHalfX;
+		if ( center.x + viewAreaHalfX >= mapSizeX )
+			center.x = mapSizeX - viewAreaHalfX;
+		if ( center.y - viewAreaHalfY <= 0 )
+			center.y = viewAreaHalfY;
+		if ( center.y + viewAreaHalfY >= mapSizeY )
+			center.y = mapSizeY - viewAreaHalfY;
+
+		tileMap->View.setCenter( center );
+	}
+
+	void render( sf::RenderWindow& window ) override
+	{
 		auto defaultView = window.getView();
-		window.setView( v );
+		window.setView( tileMap->View );
 		window.draw( sprite );
 		window.setView( defaultView );
 	}

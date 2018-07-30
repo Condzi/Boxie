@@ -23,7 +23,7 @@ public:
 
 		Map.TilesTexture = &con::Global.Assets.Texture.get( "tiles_texture" );
 
-		Map.TileData.reset( { 32, 20 } );
+		Map.TileData.reset( {50, 50 } );
 		Tile t;
 		t.TextureIndex = 1;
 		Map.TileData[1][1] = t;
@@ -36,6 +36,7 @@ public:
 			MessageAr.display( "Sixteen letters!", MessageArea::DisplaySpeed::Fast );
 		};
 
+		Map.TileData[3][2].TextureIndex = 1;
 
 		Map.updateVertices();
 
@@ -43,7 +44,9 @@ public:
 		con::Global.GameWindow.setView( view );
 
 		addSystem<MovementDispatcher>( 0 );
-		spawn<Player>().position = { 3,3 };
+		auto& p = spawn<Player>();
+		p.position = { 3,3 };
+		p.tileMap = &Map;
 	}
 
 	void onUpdate()
