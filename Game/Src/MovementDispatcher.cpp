@@ -111,7 +111,7 @@ void MovementDispatcher::calcVelocity( MovableEntity& entity )
 
 	v = movementDirToVectorDir( entity.MoveDirection );
 	if ( t == 0 ) {
-		con::Global.Logger.log( con::LogPriority::Warning, "Transiion Time can't be 0" );
+		con::Global.Logger.log( con::LogPriority::Warning, "Transision Time can't be 0" );
 		DebugBreak();
 	}
 

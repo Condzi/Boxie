@@ -37,7 +37,7 @@ enum class DrawLayer : int16_t
 	Entity
 };
 
-// Created Iterator-like style
+// Created in Iterator-like style
 enum class TileID : uint8_t
 {
 	FLOOR_BEGIN = 0, // Add floor tiles here \/\/
