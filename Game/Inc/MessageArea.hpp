@@ -25,7 +25,7 @@ public:
 
 	void display( const std::string& textToDisplay_, const sf::Time& displayingSpeed_ )
 	{
-		textToDisplay = textToDisplay_;
+		textToDisplay = textToDisplay_ + " ";
 		displayingSpeed = displayingSpeed_;
 		timeSinceLastDisplay = displayingSpeed;
 	}
