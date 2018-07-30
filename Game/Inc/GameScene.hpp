@@ -40,7 +40,7 @@ public:
 	void onUpdate()
 	{
 		auto& input = con::Global.Input;
-		auto& v = Map.MapView;
+		auto& v = Map.View;
 		auto dt = con::Global.FrameTime.asSeconds();
 
 		if ( input.isDown( con::KeyboardKey::A ) )
