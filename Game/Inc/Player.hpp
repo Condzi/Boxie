@@ -14,15 +14,22 @@ class Player final :
 	public con::IDrawable
 {
 public:
-	sf::Sprite sprite;
-	TileMap* tileMap;
+	sf::Sprite Sprite;
+	TileMap& LevelMap;
+
+	Player( TileMap& LevelMap_, const Vec2f& position_ ) :
+		LevelMap( LevelMap_ )
+	{
+		position = position_;
+		OccupiedTile = &LevelMap.TileData.at( static_cast<Vec2u>( position ) );
+	}
 
 	void onSpawn() override
 	{
 		tag = "Player";
 		setDrawLayer( static_cast<int16_t>( DrawLayer::Entity ) );
-		sprite.setTexture( con::Global.Assets.Texture.get( "entities_texture" ) );
-		sprite.setTextureRect( { 0,0,4,4 } );
+		Sprite.setTexture( con::Global.Assets.Texture.get( "entities_texture" ) );
+		Sprite.setTextureRect( { 0,0,4,4 } );
 	}
 
 	void onUpdate() override
@@ -48,14 +55,14 @@ private:
 	void updatePositions()
 	{
 		auto pixelPos = position * static_cast<float32_t>( TileMap::TILE_SIZE );
-		sprite.setPosition( pixelPos );
+		Sprite.setPosition( pixelPos );
 
 		auto center = pixelPos;
 		auto viewAreaHalfX = TileMap::VIEW_AREA.x / 2;
 		auto viewAreaHalfY = TileMap::VIEW_AREA.y / 2;
 
-		auto mapSizeX = tileMap->TileData.size2D().x * TileMap::TILE_SIZE;
-		auto mapSizeY = tileMap->TileData.size2D().y * TileMap::TILE_SIZE;
+		auto mapSizeX = LevelMap.TileData.size2D().x * TileMap::TILE_SIZE;
+		auto mapSizeY = LevelMap.TileData.size2D().y * TileMap::TILE_SIZE;
 
 		if ( center.x - viewAreaHalfX <= 0 )
 			center.x = viewAreaHalfX;
@@ -66,14 +73,14 @@ private:
 		if ( center.y + viewAreaHalfY >= mapSizeY )
 			center.y = mapSizeY - viewAreaHalfY;
 
-		tileMap->View.setCenter( center );
+		LevelMap.View.setCenter( center );
 	}
 
 	void render( sf::RenderWindow& window ) override
 	{
 		auto defaultView = window.getView();
-		window.setView( tileMap->View );
-		window.draw( sprite );
+		window.setView( LevelMap.View );
+		window.draw( Sprite );
 		window.setView( defaultView );
 	}
 };

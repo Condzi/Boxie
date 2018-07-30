@@ -44,10 +44,7 @@ public:
 		con::Global.GameWindow.setView( view );
 
 		addSystem<MovementDispatcher>( 0 );
-		auto& p = spawn<Player>();
-		p.position = { 3,3 };
-		p.tileMap = &Map;
-		p.OccupiedTile = &Map.TileData.at( static_cast<Vec2u>( p.position ) );
+		spawn<Player>( Map, Vec2f{ 3,3 } );
 	}
 
 	void onUpdate()

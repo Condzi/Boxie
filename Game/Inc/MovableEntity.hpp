@@ -9,7 +9,7 @@ class MovableEntity :
 	public con::Entity
 {
 public:
-	sf::Time TransisionTime = sf::seconds( 0.5f );
+	sf::Time TransisionTime = sf::seconds( 0.4f );
 	enum class Direction
 	{
 		None, Left, Right, Up, Down
