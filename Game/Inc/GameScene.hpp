@@ -29,11 +29,11 @@ public:
 		Map.TileData[1][1] = t;
 
 		Map.TileData[3][1].OnIntersectionBegin = [&]( Tile&, con::Entity& e) {
-			MessageAr.display( "ur mom gay", sf::seconds( 0.05f ) );
+			MessageAr.display( "Sixteen letters!", MessageArea::DisplaySpeed::Normal );
 		};
 
 		Map.TileData[2][1].OnIntersectionEnd = [&]( Tile&, con::Entity& e ) {
-			MessageAr.display( "just kidding!", sf::seconds( 0.01f ) );
+			MessageAr.display( "Sixteen letters!", MessageArea::DisplaySpeed::Fast );
 		};
 
 

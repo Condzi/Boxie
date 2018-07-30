@@ -14,6 +14,7 @@ public:
 		validateSettings();
 		loadTextures();
 		loadFont();
+		loadSound();
 
 		con::Global.SceneStack.pop();
 		con::Global.SceneStack.push( static_cast<int16_t>( SceneID::Game ) );
@@ -63,5 +64,12 @@ private:
 		font.loadFromFile( "data/vincent.png" );
 		font.setGlyphSize( { 8,8 } );
 		bitmapFonts._setDefault( std::move( font ) );
+	}
+
+	void loadSound()
+	{
+		auto& sounds = con::Global.Assets.Sound;
+		sounds.load( "data/letter_fast.wav", "letter_fast" );
+		sounds.load( "data/letter_normal.wav", "letter_normal" );
 	}
 };

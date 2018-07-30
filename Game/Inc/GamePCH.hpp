@@ -7,7 +7,6 @@
 
 #include <Engine/All.hpp>
 
-
 constexpr float32_t WINDOW_WIDTH = 128;
 constexpr float32_t WINDOW_HEIGHT = 96;
 
@@ -48,3 +47,4 @@ enum class TileID : uint8_t
 	Wall = WALL_BEGIN,
 	WALL_END
 };
+
