@@ -37,3 +37,15 @@ enum class DrawLayer : int16_t
 	TileMap,
 	Entity
 };
+
+// Created Iterator-like style
+enum class TileID : uint8_t
+{
+	FLOOR_BEGIN = 0, // Add floor tiles here \/\/
+	Floor = FLOOR_BEGIN,
+	FLOOR_END,
+
+	WALL_BEGIN, // Add wall tiles here \/\/
+	Wall = WALL_BEGIN,
+	WALL_END
+};
