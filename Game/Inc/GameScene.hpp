@@ -26,17 +26,21 @@ public:
 		Map.TileData.reset( { 32, 20 } );
 		Tile t;
 		t.TextureIndex = 1;
-		Map.TileData[0][1] = t;
-		Map.TileData[31][0] = t;
-		Map.TileData[31][19] = t;
-		Map.TileData[0][19] = t;
+		Map.TileData[1][1] = t;
+
+		Map.TileData[3][1].OnIntersectionBegin = [&]( Tile&, con::Entity& e) {
+			MessageAr.display( "ur mom gay", sf::seconds( 0.05f ) );
+		};
+
+		Map.TileData[2][1].OnIntersectionEnd = [&]( Tile&, con::Entity& e ) {
+			MessageAr.display( "just kidding!", sf::seconds( 0.01f ) );
+		};
+
 
 		Map.updateVertices();
 
 		sf::View view( { 0,0,WINDOW_WIDTH,WINDOW_HEIGHT } );
 		con::Global.GameWindow.setView( view );
-
-		MessageAr.display( "Hello, I'm Boxie", sf::seconds( 0.2f ) );
 
 		addSystem<MovementDispatcher>( 0 );
 		spawn<Player>().position = { 3,3 };

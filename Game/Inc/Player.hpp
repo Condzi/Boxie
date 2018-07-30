@@ -26,7 +26,6 @@ public:
 
 	void onUpdate() override
 	{
-		log( con::LogPriority::Info, "x: ", position.x, ", y: ", position.y );
 		auto& input = con::Global.Input;
 
 		sprite.setPosition( position * static_cast<float32_t>( TileMap::TILE_SIZE ) );

@@ -9,9 +9,9 @@ struct Tile
 {
 	uint8_t TextureIndex{};
 	// When Entity starts stepping on this tile
-	std::function<void( Tile&, con::Entity* )> OnIntersectionBegin;
+	std::function<void( Tile&, con::Entity& )> OnIntersectionBegin = []( Tile&, con::Entity& ) {};
 	// When entity is whole on this tile (stops moving towards it)
-	std::function<void( Tile&, con::Entity* )> OnIntersectionEnd;
+	std::function<void( Tile&, con::Entity& )> OnIntersectionEnd = []( Tile&, con::Entity& ) {};
 	con::Entity* EntityOnTop = nullptr;
 
 	virtual ~Tile() = default;

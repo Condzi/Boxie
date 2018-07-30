@@ -18,4 +18,5 @@ public:
 	// the tile.
 	Vec2f Velocity{};
 	class Tile* OccupiedTile = nullptr;
+	std::function<void( con::Entity& )> onEntityApproach = []( con::Entity& ) {};
 };

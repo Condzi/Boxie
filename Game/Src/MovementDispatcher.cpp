@@ -64,6 +64,9 @@ void MovementDispatcher::updateByVelocity( MovableEntity & entity )
 			entity.Velocity.x = entity.Velocity.y = 0;
 			entity.MoveDirection = MovableEntity::MovementDirection::None;
 			entity.position = roundF( entity.position );
+
+			auto& tile = tileMap->TileData.at( static_cast<Vec2u>( entity.position ) );
+			tile.OnIntersectionEnd( tile, entity );
 		}
 	}
 }
@@ -76,14 +79,18 @@ void MovementDispatcher::tryStartMoving( MovableEntity& entity )
 	// @ToDo: Precalculate velocity? It's always the same value for same time.
 	auto& vel = entity.Velocity;
 
+	auto getTile = [&]( const Vec2f& point ) -> Tile& {
+		return tileMap->TileData.at( static_cast<Vec2u>( point ) );
+	};
+
 	auto isObstacle = [&]( const Vec2f& point ) {
 		auto begin = static_cast<uint8_t>( TileID::WALL_BEGIN );
 		auto end = static_cast<uint8_t>( TileID::WALL_END );
 
-		const auto& tile = tileMap->TileData.at( static_cast<Vec2u>( point ) );
+		const auto& tile = getTile( point );
 		auto idx = tile.TextureIndex;
 
-		return ( idx >= begin && idx < end ) || tile.EntityOnTop;
+		return ( idx >= begin && idx < end );
 	};
 
 	// If has movement dir and is standing => it requested movement in this frame
@@ -96,8 +103,14 @@ void MovementDispatcher::tryStartMoving( MovableEntity& entity )
 			con::Global.Logger.log( con::LogPriority::Info, "Obstacle - can't move" );
 			return;
 		}
-
-		calcVelocity( entity );
+		if ( auto entityOnTile = getTile( pos + tileToCheckOffset ).EntityOnTop; entityOnTile ) {
+			if ( auto casted = dynamic_cast<MovableEntity*>( entityOnTile ); casted )
+				casted->onEntityApproach( entity );
+		} else {
+			auto& tile = getTile( pos + tileToCheckOffset );
+			tile.OnIntersectionBegin( tile, entity );
+			calcVelocity( entity );
+		}
 	}
 }
 
