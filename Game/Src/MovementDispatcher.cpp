@@ -13,15 +13,15 @@ static Vec2f roundF( const Vec2f& p )
 	return Vec2f( std::roundf( p.x ), std::roundf( p.y ) );
 }
 
-static Vec2f movementDirToVectorDir( MovableEntity::MovementDirection dir )
+static Vec2f movementDirToVectorDir( MovableEntity::Direction dir )
 {
 	switch ( dir ) {
-	case MovableEntity::MovementDirection::Left: return{ -1,0 };
-	case MovableEntity::MovementDirection::Right: return{ 1,0 };
-	case MovableEntity::MovementDirection::Up: return{ 0,-1 };
-	case MovableEntity::MovementDirection::Down: return{ 0,1 };
+	case MovableEntity::Direction::Left: return{ -1,0 };
+	case MovableEntity::Direction::Right: return{ 1,0 };
+	case MovableEntity::Direction::Up: return{ 0,-1 };
+	case MovableEntity::Direction::Down: return{ 0,1 };
 	}
-	con::Global.Logger.log( con::LogPriority::Warning, "Somehow MovementDirection::None is here?" );
+	con::Global.Logger.log( con::LogPriority::Warning, "Somehow Direction::None is here?" );
 	DebugBreak();
 }
 
@@ -33,16 +33,16 @@ void MovementDispatcher::onUpdate()
 		return;
 	}
 
-
 	auto dt = con::Global.FrameTime.asSeconds();
 
-	gameScene->forEachEntityOfType<MovableEntity>( [&]( MovableEntity& e ) {
-		if ( e.MoveDirection == MovableEntity::MovementDirection::None )
+	gameScene->forEachEntityOfType<MovableEntity>( [&]( MovableEntity& entity ) {
+		if ( entity.MoveDirection == MovableEntity::Direction::None )
 			return;
 
-		updateByVelocity( e );
-		tryStartMoving( e );
-
+		updateByVelocity( entity );
+		if ( checkIfArrived( entity ) )
+			handleArrivingOnTile( entity );
+		tryStartMoving( entity );
 	} );
 }
 
@@ -54,26 +54,17 @@ void MovementDispatcher::trySetGameScene()
 	}
 }
 
-void MovementDispatcher::updateByVelocity( MovableEntity & entity )
+void MovementDispatcher::updateByVelocity( MovableEntity& entity )
 {
 	auto dt = con::Global.FrameTime.asSeconds();
 
-	if ( entity.Velocity.x != 0 || entity.Velocity.y != 0 ) {
+	if ( entity.Velocity != Vec2f{ 0,0 } )
 		entity.position += entity.Velocity * dt;
-		if ( roundF( entity.position * 10.f ) / 10.f == roundF( entity.position ) ) {
-			entity.Velocity.x = entity.Velocity.y = 0;
-			entity.MoveDirection = MovableEntity::MovementDirection::None;
-			entity.position = roundF( entity.position );
-
-			auto& tile = tileMap->TileData.at( static_cast<Vec2u>( entity.position ) );
-			tile.OnIntersectionEnd( tile, entity );
-		}
-	}
 }
 
 void MovementDispatcher::tryStartMoving( MovableEntity& entity )
 {
-	using Dir = MovableEntity::MovementDirection;
+	using Dir = MovableEntity::Direction;
 	auto& entityDir = entity.MoveDirection;
 	auto& pos = entity.position;
 	// @ToDo: Precalculate velocity? It's always the same value for same time.
@@ -99,8 +90,6 @@ void MovementDispatcher::tryStartMoving( MovableEntity& entity )
 
 		if ( isObstacle( pos  + tileToCheckOffset ) ) {
 			entityDir = Dir::None;
-			// @Debug only
-			con::Global.Logger.log( con::LogPriority::Info, "Obstacle - can't move" );
 			return;
 		}
 		if ( auto entityOnTile = getTile( pos + tileToCheckOffset ).EntityOnTop; entityOnTile ) {
@@ -128,4 +117,33 @@ void MovementDispatcher::calcVelocity( MovableEntity& entity )
 
 	// *= because there will be 0 in direction so it'll be skipped
 	v *= s / t;
+}
+
+bool MovementDispatcher::checkIfArrived( MovableEntity& entity )
+{
+	auto occupiedTilePos = static_cast<Vec2f>( entity.OccupiedTile->PositionOnMap );
+	auto desiredTilePos = movementDirToVectorDir( entity.MoveDirection ) + occupiedTilePos;
+	auto desiredPos = desiredTilePos * static_cast<float32_t>( TileMap::TILE_SIZE );
+	auto pos = entity.position * static_cast<float32_t>( TileMap::TILE_SIZE );
+
+	switch ( entity.MoveDirection ) {
+	case MovableEntity::Direction::Left: return pos.x <= desiredPos.x;
+	case MovableEntity::Direction::Right: return pos.x >= desiredPos.x;
+	case MovableEntity::Direction::Up: return pos.y <= desiredPos.y;
+	case MovableEntity::Direction::Down: return pos.y >= desiredPos.y;
+	}
+}
+
+void MovementDispatcher::handleArrivingOnTile( MovableEntity& entity )
+{
+	entity.Velocity = {};
+	entity.MoveDirection = MovableEntity::Direction::None;
+	entity.position = roundF( entity.position );
+
+	auto& tile = tileMap->TileData.at( static_cast<Vec2u>( entity.position ) );
+	entity.OccupiedTile->EntityOnTop = nullptr;
+	entity.OccupiedTile = &tile;
+	tile.EntityOnTop = &entity;
+
+	tile.OnIntersectionEnd( tile, entity );
 }

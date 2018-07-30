@@ -31,17 +31,17 @@ public:
 
 		updatePositions();
 
-		if ( MoveDirection != MovementDirection::None )
+		if ( MoveDirection != Direction::None )
 			return;
 
-		if ( input.isDown( sf::Keyboard::A ) )
-			MoveDirection = MovementDirection::Left;
-		if ( input.isDown( sf::Keyboard::D ) )
-			MoveDirection = MovementDirection::Right;
-		if ( input.isDown( sf::Keyboard::W ) )
-			MoveDirection = MovementDirection::Up;
-		if ( input.isDown( sf::Keyboard::S ) )
-			MoveDirection = MovementDirection::Down;
+		if ( input.isHeld( sf::Keyboard::A ) )
+			MoveDirection = Direction::Left;
+		if ( input.isHeld( sf::Keyboard::D ) )
+			MoveDirection = Direction::Right;
+		if ( input.isHeld( sf::Keyboard::W ) )
+			MoveDirection = Direction::Up;
+		if ( input.isHeld( sf::Keyboard::S ) )
+			MoveDirection = Direction::Down;
 	}
 
 private:

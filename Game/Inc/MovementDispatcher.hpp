@@ -21,4 +21,6 @@ private:
 	void updateByVelocity( MovableEntity& entity );
 	void tryStartMoving( MovableEntity& entity );
 	void calcVelocity( MovableEntity& entity );
+	bool checkIfArrived( MovableEntity& entity );
+	void handleArrivingOnTile( MovableEntity& entity );
 };

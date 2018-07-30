@@ -7,6 +7,8 @@
 
 struct Tile
 {
+	// In map units
+	Vec2u PositionOnMap;
 	uint8_t TextureIndex{};
 	// When Entity starts stepping on this tile
 	std::function<void( Tile&, con::Entity& )> OnIntersectionBegin = []( Tile&, con::Entity& ) {};
@@ -46,6 +48,8 @@ public:
 		if ( !TilesTexture )
 			return log( con::LogPriority::Error, "TilesTexture not set." );
 
+		setPositionsOfTiles();
+
 		mapVertices.clear();
 		const auto mapWidth = TileData.size2D().x;
 		const auto mapHeight = TileData.size2D().y;
@@ -80,6 +84,13 @@ private:
 		return "TileMap";
 	}
 
+	void setPositionsOfTiles()
+	{
+		for ( size_t x = 0; x < TileData.size2D().x; x++ )
+			for ( size_t y = 0; y < TileData.size2D().y; y++ )
+				TileData.at( { x,y } ).PositionOnMap = { x,y };
+	}
+
 	void render( sf::RenderWindow& window ) override
 	{
 		sf::RenderStates states;
@@ -89,6 +100,5 @@ private:
 		window.setView( View );
 		window.draw( mapVertices, states );
 		window.setView( defaultView );
-
 	}
 };

@@ -47,10 +47,13 @@ public:
 		auto& p = spawn<Player>();
 		p.position = { 3,3 };
 		p.tileMap = &Map;
+		p.OccupiedTile = &Map.TileData.at( static_cast<Vec2u>( p.position ) );
 	}
 
 	void onUpdate()
 	{
+		con::Global.GameWindow.setTitle( con::ConvertTo<std::string>( 1 / con::Global.FrameTime.asSeconds() ) );
+		
 		auto& input = con::Global.Input;
 
 		if ( input.isDown( con::KeyboardKey::Space ) ) {
