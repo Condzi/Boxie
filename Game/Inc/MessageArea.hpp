@@ -20,46 +20,51 @@ public:
 	inline static constexpr float32_t SPEED_NORMAL = 0.06f;
 	inline static constexpr float32_t SPEED_SLOW = 0.1f;
 
-	con::BitmapText displayedText;
-	std::string textString;
-	sf::Time timeSinceLastDisplay;
-	size_t charsAlreadyDisplayed = 0;
-
 	MessageArea()
 	{
 		displayedText.setFont( con::Global.Assets.BitmapFonts.getDefault() );
-		displayedText.setColor( { 200,200,200 } );
 	}
 
 	void display( const std::string& textToDisplay_, DisplaySpeed displaySpeed_ )
 	{
 		clear();
-		// Additional space is needed to clear after all characters ale displayed, otherwise
-		// last one could be truncated
-		textString = textToDisplay_ + " ";
 		displaySpeed = displaySpeed_;
 		timeSinceLastDisplay = displaySpeedToTime( displaySpeed );
+		displayedText.setString( textToDisplay_ );
+		displayedText.setColors( sf::Color::Transparent );
+		lettersColors.resize( textToDisplay_.size(), sf::Color( 200, 200, 200 ) );
+	}
+
+	void setLettersColors( sf::Color color, size_t pos, size_t count = 1 )
+	{
+		auto beg = lettersColors.begin() + pos;
+		auto end = beg + count;;
+		std::fill( beg, end, color );
 	}
 
 	void displayAll()
 	{
-		charsAlreadyDisplayed = textString.size() - 1;
-		displayedText.setString( textString.substr( 0, charsAlreadyDisplayed - 1 ) );
+		for ( size_t i = 0; i < lettersColors.size(); i++ )
+			if ( displayedText.getColor( i ) != lettersColors.at( i ) )
+				displayedText.setColor( lettersColors.at( i ), i );
 	}
 
 	void clear()
 	{
-		textString.clear();
 		displayedText.setString( "" );
-		charsAlreadyDisplayed = 0;
+		lettersColors.clear();
 	}
 
 	bool isDoneDisplaying()
 	{
-		return charsAlreadyDisplayed == textString.size();
+		return lettersColors.empty() ||
+			displayedText.getColor( displayedText.getString().size() - 1 ) == lettersColors.at( displayedText.getString().size() - 1 );
 	}
 
 private:
+	std::vector<sf::Color> lettersColors;
+	con::BitmapText displayedText;
+	sf::Time timeSinceLastDisplay;
 	DisplaySpeed displaySpeed;
 
 	void update() override
@@ -69,11 +74,15 @@ private:
 
 		timeSinceLastDisplay -= con::Global.FrameTime;
 		if ( timeSinceLastDisplay.asSeconds() < 0 ) {
-			if ( charsAlreadyDisplayed == textString.size() )
-				return;
 			timeSinceLastDisplay = displaySpeedToTime( displaySpeed );
-			charsAlreadyDisplayed++;
-			displayedText.setString( textString.substr( 0, charsAlreadyDisplayed ) );
+
+			// Not the optimal way, but for 16 chars will do the job.
+			// It may be overshoot with additional counting variable, that count how many chars are displayed now.
+			for ( size_t i = 0; i < lettersColors.size(); i++ )
+				if ( displayedText.getColor( i ) != lettersColors.at( i ) ) {
+					displayedText.setColor( lettersColors.at( i ), i );
+					break;
+				}
 
 			if ( displaySpeed == DisplaySpeed::Fast )
 				con::Global.Assets.Sound.play( "letter_fast" );

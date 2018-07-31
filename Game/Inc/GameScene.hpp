@@ -30,10 +30,12 @@ public:
 
 		Map.TileData[3][1].OnIntersectionBegin = [&]( Tile&, con::Entity& e) {
 			MessageAr.display( "Sixteen letters!", MessageArea::DisplaySpeed::Normal );
+			MessageAr.setLettersColors( sf::Color::Red, 0, 7 );
 		};
 
 		Map.TileData[2][1].OnIntersectionEnd = [&]( Tile&, con::Entity& e ) {
 			MessageAr.display( "Sixteen letters!", MessageArea::DisplaySpeed::Fast );
+			MessageAr.setLettersColors( sf::Color::Green, 0, 7 );
 		};
 
 		Map.TileData[3][2].TextureIndex = 1;
