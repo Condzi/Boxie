@@ -17,14 +17,15 @@ void GameScene::onPush()
 	t.TextureIndex = 1;
 	Map.TileData[1][1] = t;
 
+
 	Map.TileData[3][1].OnIntersectionBegin = [&]( Tile&, con::Entity& e ) {
-		MessageAr.display( "Sixteen letters!", MessageArea::DisplaySpeed::Normal );
-		MessageAr.setLettersColors( sf::Color::Red, 0, 7 );
+		Messenger.writeNew().setDisplaySpeed( MessageWriter::WriteSpeed::Normal ).setSound( "letter_normal" ).setText(
+			"HEY |(255 0 0){BOXIE}!||COME CLOSER!" );
 	};
 
 	Map.TileData[2][1].OnIntersectionEnd = [&]( Tile&, con::Entity& e ) {
-		MessageAr.display( "Sixteen letters!", MessageArea::DisplaySpeed::Fast );
-		MessageAr.setLettersColors( sf::Color::Green, 0, 7 );
+		Messenger.writeNew().setDisplaySpeed( MessageWriter::WriteSpeed::Fast ).setSound( "letter_fast" ).setText(
+			"WANT |(0 255 255){DIAMONDS}?||GO TO |(255 0 0){WENDY}." );
 	};
 
 	Map.TileData[3][2].TextureIndex = 1;
@@ -45,9 +46,9 @@ void GameScene::onUpdate()
 	auto& input = con::Global.Input;
 
 	if ( input.isDown( con::KeyboardKey::Space ) ) {
-		if ( MessageAr.isDoneDisplaying() )
-			MessageAr.clear();
+		if ( !Messenger.isDoneDisplayingLine() )
+			Messenger.displayAll();
 		else
-			MessageAr.displayAll();
+			Messenger.skip();
 	}
 }

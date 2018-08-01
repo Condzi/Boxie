@@ -31,12 +31,14 @@ void MessageViewer::skip()
 	if ( isDoneDisplayingAll() )
 		reset();
 	else if ( isDoneDisplayingLine() )
-		nextLine();
+		if ( !textData.linesToDisplay.empty() )
+			nextLine();
 }
 
 bool MessageViewer::isDoneDisplayingLine() const
 {
-	return currentViewingLetter == textData.linesToDisplay.at( currentViewingLine ).size() - 1;
+	return textData.linesToDisplay.empty() || textData.linesToDisplay.at( currentViewingLine ).empty() ||
+		currentViewingLetter == textData.linesToDisplay.at( currentViewingLine ).size();
 }
 
 bool MessageViewer::isDoneDisplayingAll() const
@@ -71,9 +73,9 @@ void MessageViewer::update()
 
 	if ( timeSinceLastDisplay < sf::Time::Zero ) {
 		timeSinceLastDisplay = displaySpeed;
+		textToDisplay.setColor( textData.linesColorData.at( currentViewingLine ).at( currentViewingLetter ), currentViewingLetter );
 		currentViewingLetter++;
 
-		textToDisplay.setColor( textData.linesColorData.at( currentViewingLine ).at( currentViewingLetter ), currentViewingLetter );
 		con::Global.Assets.Sound.play( soundName );
 	}
 }

@@ -6,8 +6,8 @@
 #pragma once
 
 #include "TileMap.hpp"
-#include "MessageArea.hpp"
 #include "MovementDispatcher.hpp"
+#include "MessageViewer.hpp"
 #include "Player.hpp"
 
 class GameScene final :
@@ -15,7 +15,7 @@ class GameScene final :
 {
 public:
 	TileMap Map;
-	MessageArea MessageAr;
+	MessageViewer Messenger;
 
 	void onPush() override;
 	void onUpdate() override;

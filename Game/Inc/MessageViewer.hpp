@@ -29,6 +29,7 @@ private:
 	sf::Time timeSinceLastDisplay;
 	sf::Time displaySpeed;
 	con::BitmapText textToDisplay;
+	// Letter after displaying is bigger by 1 than string length!
 	size_t currentViewingLine{}, currentViewingLetter{};
 	MessageWriter::FormatedStringData textData;
 	std::string soundName;
