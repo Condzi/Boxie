@@ -28,7 +28,12 @@ private:
 	sf::Time timeSinceLastDisplay;
 	sf::Time displaySpeed;
 	con::BitmapText textToDisplay;
+	size_t currentViewingLine{}, currentViewingLetter{};
+	MessageWriter::FormatedStringData textData;
+	std::string soundName;
 
+	// Resets all info
+	void reset();
 	void update() override;
 	void render( sf::RenderWindow& window ) override;
 	int8_t getUpdatePriority() const override;

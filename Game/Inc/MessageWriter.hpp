@@ -7,7 +7,8 @@
 
 class MessageViewer;
 
-class MessageWriter final 
+// Helper class for MessageViewer for easier text displaying.
+class MessageWriter final
 {
 public:
 	struct FormatedStringData
@@ -16,24 +17,28 @@ public:
 		std::vector<std::vector<sf::Color>> linesColorData;
 	};
 
-	MessageWriter( MessageViewer& messageViewer );
-
+	// Speed in milliseconds
 	enum class WriteSpeed
 	{
-		Fast, Normal, Slow
+		Fast = 29, Normal = 60, Slow = 100
 	};
 
-	// Resets all info
-	void reset();
+	inline static const sf::Color DEFAULT_TEXT_COLOR{ 200,200,200 };
 
-	// |(r,g,b){} - sets color of characters in {} to given rgb
-	// || - cuts string (auto-cut if string is longer than 16)
+	MessageWriter( MessageViewer& messageViewer_ );
+
+	// |(r g b){} - sets color of characters in {} to given rgb
+	// || - cuts string 
 	MessageWriter& setText( const std::string& text );
-	MessageWriter& setDisplaySpeed( WriteSpeed writeSpeed_ );
-	MessageWriter& setSound( const std::string& soundName_ );
+	MessageWriter& setDisplaySpeed( WriteSpeed writeSpeed );
+	MessageWriter& setSound( const std::string& soundName );
 
 private:
-	FormatedStringData getFormatedStringData();
+	MessageViewer& messageViewer;
 
-	sf::Time convertWriteSpeedToTime( WriteSpeed d );
+	FormatedStringData getFormatedStringData( const std::string& org );
+	std::vector<std::string> formatNewLines( std::string& str );
+	std::vector<sf::Color> formatColors( std::string str );
+	sf::Color formatColorInfo( std::string str );
+	sf::Time convertWriteSpeedToTime( WriteSpeed ws );
 };
