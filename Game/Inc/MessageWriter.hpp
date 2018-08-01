@@ -38,7 +38,7 @@ private:
 
 	FormatedStringData getFormatedStringData( const std::string& org );
 	std::vector<std::string> formatNewLines( std::string& str );
-	std::vector<sf::Color> formatColors( std::string str );
+	std::vector<sf::Color> formatColors( std::string& str );
 	sf::Color formatColorInfo( std::string str );
 	sf::Time convertWriteSpeedToTime( WriteSpeed ws );
 };

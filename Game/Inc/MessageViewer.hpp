@@ -20,11 +20,12 @@ public:
 	MessageWriter& writeNew();
 
 	void displayAll();
-	void clear();
-	bool isDoneDisplaying() const;
+	void skip();
+	bool isDoneDisplayingLine() const;
+	bool isDoneDisplayingAll() const;
 
 private:
-	MessageWriter writer;
+	MessageWriter writer{*this};
 	sf::Time timeSinceLastDisplay;
 	sf::Time displaySpeed;
 	con::BitmapText textToDisplay;
@@ -34,6 +35,7 @@ private:
 
 	// Resets all info
 	void reset();
+	void nextLine();
 	void update() override;
 	void render( sf::RenderWindow& window ) override;
 	int8_t getUpdatePriority() const override;
