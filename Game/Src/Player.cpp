@@ -29,10 +29,12 @@ void Player::onUpdate()
 
 void Player::updateSpritePositionAndViewCenter()
 {
-	auto pixelPos = position * static_cast<float32_t>( TileMap::TILE_SIZE );
+	const auto TILE_SIZE = static_cast<float32_t>( TileMap::TILE_SIZE );
+	auto pixelPos = position * TILE_SIZE;
 	Sprite.setPosition( pixelPos );
 
-	auto center = pixelPos;
+	// Center of sprite 
+	auto center = pixelPos + Vec2f{ TILE_SIZE/2, TILE_SIZE/2 };
 	auto viewAreaHalfX = TileMap::VIEW_AREA.x / 2;
 	auto viewAreaHalfY = TileMap::VIEW_AREA.y / 2;
 

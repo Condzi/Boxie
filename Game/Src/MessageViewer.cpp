@@ -22,8 +22,8 @@ void MessageViewer::displayAll()
 {
 	const auto& colorData = textData.linesColorData.at( currentViewingLine );
 
-	for ( ; currentViewingLetter < colorData.size(); currentViewingLetter++ );
-	textToDisplay.setColor( colorData.at( currentViewingLetter ), currentViewingLetter );
+	for ( ; currentViewingLetter < colorData.size(); currentViewingLetter++ )
+		textToDisplay.setColor( colorData.at( currentViewingLetter ), currentViewingLetter );
 }
 
 void MessageViewer::skip()
