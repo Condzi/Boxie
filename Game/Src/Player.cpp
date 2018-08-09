@@ -41,13 +41,13 @@ void Player::updateSpritePositionAndViewCenter()
 	auto mapSizeX = LevelMap.TileData.size2D().x * TileMap::TILE_SIZE;
 	auto mapSizeY = LevelMap.TileData.size2D().y * TileMap::TILE_SIZE;
 
-	if ( center.x - viewAreaHalfX <= 0 )
+	if ( center.x - viewAreaHalfX < 0 )
 		center.x = viewAreaHalfX;
-	if ( center.x + viewAreaHalfX >= mapSizeX )
+	if ( center.x + viewAreaHalfX > mapSizeX )
 		center.x = mapSizeX - viewAreaHalfX;
-	if ( center.y - viewAreaHalfY <= 0 )
+	if ( center.y - viewAreaHalfY < 0 )
 		center.y = viewAreaHalfY;
-	if ( center.y + viewAreaHalfY >= mapSizeY )
+	if ( center.y + viewAreaHalfY > mapSizeY )
 		center.y = mapSizeY - viewAreaHalfY;
 
 	LevelMap.View.setCenter( center );

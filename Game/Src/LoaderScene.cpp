@@ -14,7 +14,7 @@ void LoaderScene::onPush()
 	loadSound();
 
 	con::Global.SceneStack.pop();
-	con::Global.SceneStack.push( static_cast<int16_t>( SceneID::Game ) );
+	con::Global.SceneStack.push( "Game" );
 }
 
 void LoaderScene::validateSettings()

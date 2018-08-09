@@ -8,8 +8,6 @@
 
 void GameScene::onPush()
 {
-	tag = "Game";
-
 	Map.TilesTexture = &con::Global.Assets.Texture.get( "tiles_texture" );
 
 	Map.TileData.reset( { 50, 50 } );

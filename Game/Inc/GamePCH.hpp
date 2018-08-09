@@ -25,12 +25,6 @@ inline Vec2f mapPixelToAbsolute( const Vec2f& point )
 	return { mapPixelXToAbsolute( point.x ), mapPixelYToAbsolute( point.y ) };
 }
 
-enum class SceneID : int16_t
-{
-	Loader,
-	Game
-};
-
 enum class DrawLayer : int16_t
 {
 	TileMap,
